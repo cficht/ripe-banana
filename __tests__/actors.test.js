@@ -1,4 +1,4 @@
-require('../db/data-helpers');
+const { getActors } = require('../db/data-helpers');
 
 const request = require('supertest');
 const app = require('../lib/app');
@@ -21,6 +21,16 @@ describe('studios routes', () => {
           pob: 'Portland',
           __v: 0
         });
+      });
+  });
+
+  it('gets all actors', async() => {
+    const actors = await getActors();
+
+    return request(app)
+      .get('/api/v1/actors')
+      .then(res => {
+        expect(res.body).toEqual(actors);
       });
   });
 
