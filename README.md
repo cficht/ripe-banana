@@ -4,7 +4,7 @@
 * studio routes
   * create
   * get all
-  * get by id
+  * get by id FIX FOR FILMS
 * Actor model
   * name
   * dob
@@ -12,14 +12,14 @@
 * actor routes
   * create
   * get all
-  * get by id
+  * get by id FIX FOR FILMS
 * Reviewer model
   * name
   * company
 * reviewer routes
   * create
-  
   * get all
-  * get by id
+  * get by id FIX FOR REVIEWS
   * update
+  
   * delete

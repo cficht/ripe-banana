@@ -35,5 +35,37 @@ describe('reviewers routes', () => {
       });
   });
 
- 
+  it('gets a reviewer by id', async() => {
+    const reviewer = await getReviewer();
+
+    return request(app)
+      .get(`/api/v1/reviewers/${reviewer._id}`)
+      .then(res => {
+        expect(res.body).toEqual(reviewer);
+      });
+  });
+
+  it('updates a reviewer company by id', async() => {
+    const reviewer = await getReviewer();
+
+    return request(app)
+      .patch(`/api/v1/reviewers/${reviewer._id}`)
+      .send({ company: 'Some New Place' })
+      .then(res => {
+        expect(res.body).toEqual({
+          ...reviewer,
+          company: 'Some New Place'
+        });
+      });
+  });
+
+  it('deletes a reviewer by id', async() => {
+    const reviewer = await getReviewer();
+
+    return request(app)
+      .delete(`/api/v1/reviewers/${reviewer._id}`)
+      .then(res => {
+        expect(res.body).toEqual(reviewer);
+      });
+  });
 });
