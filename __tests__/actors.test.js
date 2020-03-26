@@ -30,7 +30,12 @@ describe('studios routes', () => {
     return request(app)
       .get('/api/v1/actors')
       .then(res => {
-        expect(res.body).toEqual(actors);
+        actors.forEach(actor => {
+          delete actor.__v;
+          delete actor.dob;
+          delete actor.pob;
+          expect(res.body).toContainEqual(actor);
+        });
       });
   });
 
