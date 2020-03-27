@@ -30,11 +30,6 @@ module.exports = async({ studiosToCreate = 10, actorsToCreate = 50, reviewersToC
     title: `${chance.word()} ${chance.animal()}`,
     studio: chance.pickone(studios),
     released: chance.year(),
-    cast: Array(10).map(() => ({
-      role: `${chance.prefix()} ${chance.name()}`,
-      actor: chance.pickset(actors, 10).map(actor => actor._id)
-    }))
-    
+    cast: [...Array(10)].map(() => ({ role: `${chance.prefix()} ${chance.animal()}`, actor: chance.pickone(actors) }))    
   })));
-
 };
