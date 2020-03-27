@@ -30,8 +30,8 @@
 * Film routes
   * create
   * get all
-  
-  * get by
+  * get by id FIX FOR REVIEWS
+
 * Review model
   * rating
   * reviewer
