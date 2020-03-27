@@ -1,4 +1,4 @@
-const { getFilms } = require('../db/data-helpers');
+const { getFilms, getFilm, getStudio, getActors } = require('../db/data-helpers');
 const mongoose = require('mongoose');
 
 const request = require('supertest');
@@ -44,6 +44,38 @@ describe('films routes', () => {
           delete film.cast;
           expect(res.body).toContainEqual({ ...film, studio: expect.any(Object) });
         });
+      });
+  });
+
+  it('gets a film by id', async() => {
+    const film = await getFilm();
+    const studio = await getStudio({ _id: { $in: film.studio } });
+    const actors = await getActors({
+      _id: { $in: film.cast.map(member => member.actor) }
+    });
+    
+
+    return request(app)
+      .get(`/api/v1/films/${film._id}`)
+      .then(res => {
+        actors.forEach(actor => {
+          delete actor.dob;
+          delete actor.pob;
+          delete actor.__v;
+          film.cast.forEach(member => {
+            if(member.actor === actor._id) {
+              member.actor = actor;
+            }
+          });
+        });
+        delete film.__v;
+        delete film._id;
+        expect(res.body).toEqual(
+          { ...film, studio: { 
+            _id: studio._id,
+            name: studio.name
+          } 
+          });
       });
   });
 
