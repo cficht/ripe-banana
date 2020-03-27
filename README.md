@@ -38,6 +38,12 @@
   * film  
 * Review routes
   * create
-
   * get all
   * delete
+
+* UPDATE ROUTES
+* studios - get by id (FILMS)
+* actors - get by id (FILMS)
+* reviewer - get by id (REVIEWS)
+* film - get by id (REVIEWS)
+* reviewers - deleted only if no reviews

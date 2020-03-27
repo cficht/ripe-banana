@@ -1,4 +1,4 @@
-require('../db/data-helpers');
+const { getReview } = require('../db/data-helpers');
 const mongoose = require('mongoose');
 
 const request = require('supertest');
@@ -38,6 +38,16 @@ describe('reviews routes', () => {
           review: expect.any(String),
           film: expect.any(Object),
         });
+      });
+  });
+
+  it('deletes a review by id', async() => {
+    const review = await getReview();
+
+    return request(app)
+      .delete(`/api/v1/reviews/${review._id}`)
+      .then(res => {
+        expect(res.body).toEqual(review);
       });
   });
 
