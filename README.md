@@ -31,7 +31,6 @@
   * create
   * get all
   * get by id FIX FOR REVIEWS
-
 * Review model
   * rating
   * reviewer
@@ -39,6 +38,6 @@
   * film  
 * Review routes
   * create
+
   * get all
-  * get by
   * delete

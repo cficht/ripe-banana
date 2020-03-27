@@ -27,4 +27,18 @@ describe('reviews routes', () => {
       });
   });
 
+  it('gets 100 highest reviews', async() => {
+    return request(app)
+      .get('/api/v1/reviews')
+      .then(res => {
+        expect(res.body).toHaveLength(100);
+        expect(res.body).toContainEqual({
+          _id: expect.any(String),
+          rating: expect.any(Number),
+          review: expect.any(String),
+          film: expect.any(Object),
+        });
+      });
+  });
+
 });
