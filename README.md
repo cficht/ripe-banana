@@ -1,7 +1,7 @@
 * Studio model
   * name
   * address: { city, state, country}
-* studio routes
+* Studio routes
   * create
   * get all
   * get by id FIX FOR FILMS
@@ -9,14 +9,14 @@
   * name
   * dob
   * pob
-* actor routes
+* Actor routes
   * create
   * get all
   * get by id FIX FOR FILMS
 * Reviewer model
   * name
   * company
-* reviewer routes
+* Reviewer routes
   * create
   * get all
   * get by id FIX FOR REVIEWS
@@ -27,12 +27,11 @@
   * studio
   * released
   * cast [role, actor]  
-  
 * Film routes
   * create
   * get all
+  
   * get by
-
 * Review model
   * rating
   * reviewer

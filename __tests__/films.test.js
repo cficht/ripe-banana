@@ -1,10 +1,11 @@
-require('../db/data-helpers');
+const { getFilms } = require('../db/data-helpers');
 const mongoose = require('mongoose');
 
 const request = require('supertest');
 const app = require('../lib/app');
 
 describe('films routes', () => {
+  
   it('creates a film', () => {
     return request(app)
       .post('/api/v1/films')
@@ -28,6 +29,20 @@ describe('films routes', () => {
             { _id: expect.any(String), role: 'Max', actor: expect.any(String) }
           ],
           __v: 0
+        });
+      });
+  });
+
+  it('gets all films', async() => {
+    const films = await getFilms();
+
+    return request(app)
+      .get('/api/v1/films')
+      .then(res => {
+        films.forEach(film => {
+          delete film.__v;
+          delete film.cast;
+          expect(res.body).toContainEqual({ ...film, studio: expect.any(Object) });
         });
       });
   });
