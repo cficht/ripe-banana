@@ -22,12 +22,12 @@
   * get by id FIX FOR REVIEWS
   * update
   * delete
-
 * Film model
   * title
   * studio
   * released
   * cast [role, actor]  
+  
 * Film routes
   * create
   * get all
