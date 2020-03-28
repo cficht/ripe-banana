@@ -1,11 +1,10 @@
-const { getFilms, getFilm, getStudio, getActors } = require('../db/data-helpers');
+const { getFilms, getFilm, getStudio, getActors, getReviews, getReviewers } = require('../db/data-helpers');
 const mongoose = require('mongoose');
 
 const request = require('supertest');
 const app = require('../lib/app');
 
-describe('films routes', () => {
-  
+describe('films routes', () => {  
   it('creates a film', () => {
     return request(app)
       .post('/api/v1/films')
@@ -35,7 +34,6 @@ describe('films routes', () => {
 
   it('gets all films', async() => {
     const films = await getFilms();
-
     return request(app)
       .get('/api/v1/films')
       .then(res => {
@@ -50,11 +48,20 @@ describe('films routes', () => {
   it('gets a film by id', async() => {
     const film = await getFilm();
     const studio = await getStudio({ _id: { $in: film.studio } });
-    const actors = await getActors({
-      _id: { $in: film.cast.map(member => member.actor) }
+    const actors = await getActors({ _id: { $in: film.cast.map(member => member.actor) } });
+    const reviews = await getReviews({ film: { $in: film._id } });
+    const reviewers = await getReviewers();
+    reviews.forEach(review => {
+      reviewers.forEach(reviewer => {
+        if(review.reviewer === reviewer._id) {
+          delete reviewer.__v;
+          delete reviewer.company;
+          review.reviewer = reviewer;
+        }
+      });
+      delete review.__v;
+      delete review.film;
     });
-    
-
     return request(app)
       .get(`/api/v1/films/${film._id}`)
       .then(res => {
@@ -69,12 +76,11 @@ describe('films routes', () => {
           });
         });
         delete film.__v;
-        delete film._id;
         expect(res.body).toEqual(
           { ...film, studio: { 
             _id: studio._id,
             name: studio.name
-          } 
+          }, reviews: reviews 
           });
       });
   });
