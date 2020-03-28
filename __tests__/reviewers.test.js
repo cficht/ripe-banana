@@ -1,10 +1,9 @@
-const { getReviewers, getReviewer } = require('../db/data-helpers');
+const { getReviewers, getReviewer, getReviews, getFilms } = require('../db/data-helpers');
 
 const request = require('supertest');
 const app = require('../lib/app');
 
 describe('reviewers routes', () => {
-
   it('creates a reviewer', () => {
     return request(app)
       .post('/api/v1/reviewers')
@@ -24,7 +23,6 @@ describe('reviewers routes', () => {
 
   it('gets all reviewers', async() => {
     const reviewers = await getReviewers();
-
     return request(app)
       .get('/api/v1/reviewers')
       .then(res => {
@@ -37,17 +35,31 @@ describe('reviewers routes', () => {
 
   it('gets a reviewer by id', async() => {
     const reviewer = await getReviewer();
-
+    delete reviewer.__v;
+    const reviews = await getReviews({ reviewer: { $in: reviewer._id } });
+    const films = await getFilms();
+    reviews.forEach(review => {
+      films.forEach(film => {
+        if(film._id === review.film) {
+          delete film.__v;
+          delete film.cast;
+          delete film.released;
+          delete film.studio;
+          delete review.__v;
+          delete review.reviewer;
+          review.film = film;
+        }
+      });
+    });
     return request(app)
       .get(`/api/v1/reviewers/${reviewer._id}`)
       .then(res => {
-        expect(res.body).toEqual(reviewer);
+        expect(res.body).toEqual({ ...reviewer, reviews: reviews });
       });
   });
 
   it('updates a reviewer company by id', async() => {
     const reviewer = await getReviewer();
-
     return request(app)
       .patch(`/api/v1/reviewers/${reviewer._id}`)
       .send({ company: 'Some New Place' })
@@ -61,7 +73,6 @@ describe('reviewers routes', () => {
 
   it('deletes a reviewer by id', async() => {
     const reviewer = await getReviewer();
-
     return request(app)
       .delete(`/api/v1/reviewers/${reviewer._id}`)
       .then(res => {
