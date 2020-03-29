@@ -65,6 +65,7 @@ describe('films routes', () => {
     return request(app)
       .get(`/api/v1/films/${film._id}`)
       .then(res => {
+        delete film._id;
         actors.forEach(actor => {
           delete actor.dob;
           delete actor.pob;

@@ -54,6 +54,7 @@ describe('actors routes', () => {
     return request(app)
       .get(`/api/v1/actors/${actor._id}`)
       .then(res => {
+        delete actor._id;
         delete actor.__v;
         expect(res.body).toEqual({ ...actor, films: actorFilms });
       });
