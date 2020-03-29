@@ -1,5 +1,4 @@
 const { getStudio, getStudios, getFilms } = require('../db/data-helpers');
-
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -32,7 +31,6 @@ describe('studios routes', () => {
 
   it('gets all studios', async() => {
     const studios = await getStudios();
-
     return request(app)
       .get('/api/v1/studios')
       .then(res => {
@@ -64,4 +62,5 @@ describe('studios routes', () => {
         expect(res.body).toEqual({ ...studio, films: studioFilms });
       });
   });
+  
 });

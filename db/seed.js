@@ -6,32 +6,33 @@ const Film = require('../lib/models/Film');
 const Review = require('../lib/models/Review');
 
 module.exports = async({ studiosToCreate = 10, actorsToCreate = 50, reviewersToCreate = 10, filmsToCreate = 150, reviewsToCreate = 200 } = {}) => {
-
+  const studioTypes = ['Pictures', 'Studios', 'Films'];
   const studios = await Studio.create([...Array(studiosToCreate)].map(() => ({
-    name: chance.company(),
+    name: `${chance.animal()} ${chance.pickone(studioTypes)}`,
     address: {
-      city: chance.city(),
+      city: chance.province({ full: true }),
       state: chance.state(),
-      country: chance.country()
+      country: chance.country({ full: true })
     }
   })));
 
   const actors = await Actor.create([...Array(actorsToCreate)].map(() => ({
     name: chance.name(),
-    dob: chance.date(),
-    pob: chance.city()
+    dob: chance.birthday({ string: true }),
+    pob: chance.country({ full: true })
   })));
   
   const reviewers = await Reviewer.create([...Array(reviewersToCreate)].map(() => ({
     name: chance.name(),
-    company: chance.url()
+    company: chance.company()
   })));
 
+  const romanNumerals = ['1', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
   const films = await Film.create([...Array(filmsToCreate)].map(() => ({
-    title: `${chance.word()} ${chance.animal()}`,
+    title: `The ${chance.animal()} and the ${chance.profession()} ${chance.pickone(romanNumerals)}`,
     studio: chance.pickone(studios),
-    released: chance.year(),
-    cast: [...Array(10)].map(() => ({ role: `${chance.prefix()} ${chance.animal()}`, actor: chance.pickone(actors) }))    
+    released: chance.year({ min: 1900, max: 2020 }),
+    cast: [...Array(10)].map(() => ({ role: `${chance.prefix({ full: true })} ${chance.animal()} ${chance.suffix({ full: true })}`, actor: chance.pickone(actors) }))    
   })));
 
   await Review.create([...Array(reviewsToCreate)].map(() => ({
@@ -40,4 +41,5 @@ module.exports = async({ studiosToCreate = 10, actorsToCreate = 50, reviewersToC
     review: chance.sentence({ words: 10 }),
     film: chance.pickone(films),
   })));
+  
 };

@@ -1,6 +1,5 @@
 const { getReview } = require('../db/data-helpers');
 const mongoose = require('mongoose');
-
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -43,7 +42,6 @@ describe('reviews routes', () => {
 
   it('deletes a review by id', async() => {
     const review = await getReview();
-
     return request(app)
       .delete(`/api/v1/reviews/${review._id}`)
       .then(res => {

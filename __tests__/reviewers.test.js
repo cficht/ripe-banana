@@ -1,9 +1,9 @@
 const { getReviewers, getReviewer, getReviews, getFilms } = require('../db/data-helpers');
-
 const request = require('supertest');
 const app = require('../lib/app');
 
 describe('reviewers routes', () => {
+
   it('creates a reviewer', () => {
     return request(app)
       .post('/api/v1/reviewers')
@@ -71,7 +71,7 @@ describe('reviewers routes', () => {
       });
   });
 
-  it('tries to delete but throws an error because reviewer has reviews', async() => {
+  it('throws an error if trying to delete a reviewer with reviews', async() => {
     const reviewer = await getReviewer();
     return request(app)
       .delete(`/api/v1/reviewers/${reviewer._id}`)
@@ -83,7 +83,7 @@ describe('reviewers routes', () => {
       });
   });
 
-  it('deletes the reviewer because they have no reviews', async() => {
+  it('deletes a reviewer with no reviews', async() => {
     return request(app)
       .post('/api/v1/reviewers')
       .send({
@@ -103,4 +103,5 @@ describe('reviewers routes', () => {
         });
       });
   });
+  
 });

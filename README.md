@@ -48,5 +48,9 @@
 * film - get by id (REVIEWS)
 * reviewers - deleted only if no reviews
 
-* clean code
-* deploy
+* refactor 
+* improve chance in seed
+
+* make sure all requirements are met 
+* test all routes in postman
+* deploy on heroku

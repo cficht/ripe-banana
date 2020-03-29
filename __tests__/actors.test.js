@@ -1,9 +1,9 @@
 const { getActor, getActors, getFilms } = require('../db/data-helpers');
-
 const request = require('supertest');
 const app = require('../lib/app');
 
 describe('actors routes', () => {
+  
   it('creates an actor', () => {
     return request(app)
       .post('/api/v1/actors')
@@ -51,7 +51,6 @@ describe('actors routes', () => {
         }
       });
     });
-
     return request(app)
       .get(`/api/v1/actors/${actor._id}`)
       .then(res => {
@@ -59,4 +58,5 @@ describe('actors routes', () => {
         expect(res.body).toEqual({ ...actor, films: actorFilms });
       });
   });
+  
 });
