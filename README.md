@@ -51,6 +51,6 @@
 * refactor 
 * improve chance in seed
 * make sure all requirements are met (models, routes)
-
 * test all routes in postman (get films by id has id, get actors by id has id)
+
 * deploy on heroku
